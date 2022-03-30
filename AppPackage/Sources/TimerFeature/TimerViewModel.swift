@@ -11,57 +11,104 @@ extension String {
     }
 }
 
-final class TimerViewModel: ObservableObject {
+extension CaseIterable where Self: Equatable {
+    func next() -> Self {
+        let all = Self.allCases
+        let idx = all.firstIndex(of: self)!
+        let next = all.index(after: idx)
+        return all[next == all.endIndex ? all.startIndex : next]
+    }
+}
 
-    struct TimerSettings {
-        let maxIntervalSeconds = 60 * 60 * 5
-
-        var intervalSeconds: Int
-        var breakIntervalSeconds: Int
-        var longIntervalSeconds: Int
-
-        static func `default`() -> Self {
-            .init(intervalSeconds: 2,
-                  breakIntervalSeconds: 5,
-                  longIntervalSeconds: 10)
-        }
-
-        var intervalMinutesSecond: String {
-            return convertSecondsToMinutesSeconds(seconds: intervalSeconds)
-        }
-
-//        var breakIntervalSecondsMinutesSecond: (Int, Int) {
-//            return convertSecondsToMinutesSeconds(seconds: breakIntervalSeconds)
-//        }
-
-        func convertSecondsToMinutesSeconds(seconds: Int) -> String {
-            let minutesSeconds = ((seconds % 3600) / 60, (seconds % 3600) % 60)
-            let minutes = "\(minutesSeconds.0)".zeroPadding(toSize: 3)
-            let seconds = "\(minutesSeconds.1)".zeroPadding(toSize: 2)
-
-            return "\(minutes):\(seconds)"
+enum PomodoroState: CaseIterable {
+    case working
+    case shortBreak
+    case longBreak
+    
+    var name: String {
+        switch self {
+        case .working:
+            return "作業中"
+        case .shortBreak:
+            return "短い休憩"
+        case .longBreak:
+            return "長い休憩"
         }
     }
+}
 
-    // 表示用のタイマー設定
-    @Published var currentTimerSettings: TimerSettings = .default()
-    // 現在のタイマー設定（修正した場合はここに反映され、次回のセッションより表示に反映される）
-    var timerSettings: TimerSettings = .init(intervalSeconds: 50, breakIntervalSeconds: 10, longIntervalSeconds: 10)
+enum TimerState {
+    case start
+    case stop
+}
 
+final class TimerViewModel: ObservableObject {
+    @Published var pomodoroState: PomodoroState = .working
+    @Published var timerState: TimerState = .start
+    @Published var timerText: String = "00:00"
+    
+    var timerSettings: TimerSettings = .default()
+    
+    private var timer: Timer!
+    
     private var cancellables = Set<AnyCancellable>()
 
     init() {
-        // RunLoop.Mode: https://developer.apple.com/documentation/foundation/runloop/mode
-        Timer.publish(every: 1, on: .main, in: .common)
-            .autoconnect()
-            .sink { [weak self] _ in
-                guard let self = self else { return }
-                if self.currentTimerSettings.intervalSeconds > 0 {
-                    self.currentTimerSettings.intervalSeconds -= 1
-                } else {
-                    self.currentTimerSettings = self.timerSettings
-                }
+        timerText = timerSettings.intervalMinutesSecond
+    }
+    
+    func startTimer() {
+        timer = Timer(timeInterval: 1, repeats: true) { [weak self] timer in
+            guard let self = self else { return }
+            self.timerUpdate(with: self.pomodoroState)
+        }
+        RunLoop.main.add(timer, forMode: .common)
+    }
+    
+    func timerUpdate(with state: PomodoroState) {
+        switch state {
+        case .working:
+            if self.timerSettings.intervalSeconds > 0 {
+                self.timerSettings.intervalSeconds -= 1
+                self.timerText = timerSettings.intervalMinutesSecond
+                return
             }
-            .store(in: &cancellables)
+        case .shortBreak:
+            if self.timerSettings.shortBreakIntervalSeconds > 0 {
+                self.timerSettings.shortBreakIntervalSeconds -= 1
+                self.timerText = timerSettings.shortBreakIntervalSecondsMinutesSecond
+                return
+            }
+        case .longBreak:
+            if self.timerSettings.longBreakIntervalSeconds > 0 {
+                self.timerSettings.longBreakIntervalSeconds -= 1
+                self.timerText = timerSettings.longBreakIntervalSecondsMinutesSecond
+                return
+            }
+        }
+        
+        // 設定しているタイマーが0までカウントダウンした場合
+        pomodoroState = pomodoroState.next()        
+        #warning("タイマー設定を設定画面から取得して設定し直す。現状固定値を設定")
+        timerSettings = .init(intervalSeconds: 5, shortBreakIntervalSeconds: 6, longBreakIntervalSeconds: 7)
+        switch pomodoroState {
+        case .working:
+            self.timerText = timerSettings.intervalMinutesSecond
+        case .shortBreak:
+            self.timerText = timerSettings.shortBreakIntervalSecondsMinutesSecond
+        case .longBreak:
+            self.timerText = timerSettings.longBreakIntervalSecondsMinutesSecond
+        }
+    }
+
+    func toggleTimerState() {
+        switch timerState {
+        case .start:
+            timer.invalidate()
+            timerState = .stop
+        case .stop:
+            startTimer()
+            timerState = .start
+        }
     }
 }

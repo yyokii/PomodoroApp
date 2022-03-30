@@ -7,13 +7,13 @@
 
 import SwiftUI
 
-import AppPackage
+import TimerFeature
 
 @main
 struct PomodoroApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            TimerView()
         }
     }
 }

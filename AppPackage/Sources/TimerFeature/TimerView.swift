@@ -7,17 +7,24 @@ public struct TimerView: View {
 
     public var body: some View {
         VStack {
-            Text("\(vm.currentTimerSettings.intervalMinutesSecond)")
+            Text("State: \(vm.pomodoroState.name)")
+            Text(vm.timerText)
                 .padding()
+
+            switch vm.timerState {
+            case .start:
+                Button("Stop") {
+                    vm.toggleTimerState()
+                }
+            case .stop:
+                Button("Start") {
+                    vm.toggleTimerState()
+                }
+            }
         }
-    }
-}
-
-struct SliderView: View {
-    @State private var value: Double = 0
-
-    var body: some View {
-        Slider(value: $value)
+        .onAppear {
+            vm.startTimer()
+        }
     }
 }
 
