@@ -11,8 +11,11 @@ let package = Package(
     ],
     products: [
         .library(
-            name: "AppPackage",
-            targets: ["AppPackage"]),
+            name: "App",
+            targets: [
+                "AppPackage",
+                "TimerFeature"
+            ]),
     ],
     dependencies: [
     ],
@@ -20,7 +23,10 @@ let package = Package(
         .target(
             name: "AppPackage",
             dependencies: []),
-
+        .target(
+            name: "TimerFeature",
+            dependencies: []),
+        
         // Test
         .testTarget(
             name: "AppPackageTests",
