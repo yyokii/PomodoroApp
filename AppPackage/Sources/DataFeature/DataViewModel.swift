@@ -2,6 +2,7 @@ import Combine
 import Foundation.NSDate
 
 import SwiftHelper
+import CoreGraphics
 
 struct DateItemViewData: Identifiable {
     let id = UUID()
@@ -25,14 +26,20 @@ struct DateItemViewData: Identifiable {
     }
 }
 
+struct TaskViewData {
+    let startTime: String
+    let endTime: String
+    let taskHeight: CGFloat
+    let category: String?
+    let name: String?
+}
+
 final class DataViewModel: ObservableObject {
     @Published var dateItems: [DateItemViewData] = []
 
     init() {
         let now = Date()
-        print(now)
         let start = Date().startOfWeek
-        print(start)
         dateItems = Date().daysOfWeek
             .map{
                 .init(with: $0)
