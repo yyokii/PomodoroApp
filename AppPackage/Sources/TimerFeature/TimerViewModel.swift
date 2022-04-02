@@ -1,24 +1,7 @@
 import Combine
 import Foundation.NSTimer
 
-extension String {
-    func zeroPadding(toSize: Int) -> String {
-        var padded = self
-        for _ in 0..<(toSize - count) {
-            padded = "0" + padded
-        }
-        return padded
-    }
-}
-
-extension CaseIterable where Self: Equatable {
-    func next() -> Self {
-        let all = Self.allCases
-        let idx = all.firstIndex(of: self)!
-        let next = all.index(after: idx)
-        return all[next == all.endIndex ? all.startIndex : next]
-    }
-}
+import SwiftHelper
 
 enum PomodoroState: CaseIterable {
     case working

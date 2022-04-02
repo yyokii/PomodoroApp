@@ -25,10 +25,17 @@ let package = Package(
             dependencies: []),
         .target(
             name: "DataFeature",
+            dependencies: [
+                "SwiftHelper"
+            ]),
+        .target(
+            name: "SwiftHelper",
             dependencies: []),
         .target(
             name: "TimerFeature",
-            dependencies: []),
+            dependencies: [
+                "SwiftHelper"
+            ]),
         
         // Test
         .testTarget(
