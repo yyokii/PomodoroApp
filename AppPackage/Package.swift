@@ -13,7 +13,7 @@ let package = Package(
         .library(
             name: "App",
             targets: [
-                "AppPackage",
+                "DataFeature",
                 "TimerFeature"
             ]),
     ],
@@ -22,6 +22,9 @@ let package = Package(
     targets: [
         .target(
             name: "AppPackage",
+            dependencies: []),
+        .target(
+            name: "DataFeature",
             dependencies: []),
         .target(
             name: "TimerFeature",

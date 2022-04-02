@@ -8,12 +8,14 @@
 import SwiftUI
 
 import TimerFeature
+import DataFeature
 
 @main
 struct PomodoroApp: App {
     var body: some Scene {
         WindowGroup {
-            TimerView()
+            DataView()
+//            TimerView()
         }
     }
 }
