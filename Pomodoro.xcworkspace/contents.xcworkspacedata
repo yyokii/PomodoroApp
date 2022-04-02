@@ -2,9 +2,12 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:AppPackage">
+      location = "group:">
    </FileRef>
    <FileRef
-      location = "group:Pomodoro/Pomodoro.xcodeproj">
+      location = "group:BuildTools">
+   </FileRef>
+   <FileRef
+      location = "group:App/Pomodoro.xcodeproj">
    </FileRef>
 </Workspace>
