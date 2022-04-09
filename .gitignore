@@ -9,3 +9,6 @@ db.sqlite
 
 # Firebase
 GoogleService-Info.plist
+
+# Others
+note.md

@@ -19,15 +19,27 @@ let package = Package(
     ],
     dependencies: [
         .package(name: "Firebase", url: "https://github.com/firebase/firebase-ios-sdk.git", from: "8.0.0"),
-//        .package(url: "https://github.com/pointfreeco/swift-composable-architecture.git", .from: "0.34.0")
+        .package(url: "https://github.com/pointfreeco/swift-composable-architecture.git", from: "0.34.0")
     ],
     targets: [
         .target(
-            name: "AppPackage",
-            dependencies: []),
+            name: "APIClient",
+            dependencies: [
+                .product(name: "FirebaseAuth", package: "Firebase"),
+                .product(name: "FirebaseAuthCombine-Community", package: "Firebase"),
+                .product(name: "FirebaseFirestore", package: "Firebase"),
+                .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+            ]),
+        .target(
+            name: "AppFeature",
+            dependencies: [
+                "APIClient",
+                .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+            ]),
         .target(
             name: "DataFeature",
             dependencies: [
+                "APIClient",
                 "SwiftHelper"
             ]),
         .target(
@@ -36,13 +48,11 @@ let package = Package(
         .target(
             name: "TimerFeature",
             dependencies: [
+                "APIClient",
                 "SwiftHelper",
                 .product(name: "FirebaseAuth", package: "Firebase"),
             ]),
         
         // Test
-        .testTarget(
-            name: "AppPackageTests",
-            dependencies: ["AppPackage"]),
     ]
 )
