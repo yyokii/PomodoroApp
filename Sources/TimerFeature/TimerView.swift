@@ -1,36 +1,54 @@
 import SwiftUI
 
-public struct TimerView: View {
-    @StateObject var vm = TimerViewModel()
+import APIClient
+import ComposableArchitecture
 
-    public init() {}
+public struct TimerView: View {
+    public var store: Store<PomodoroTimerState, PomodoroTimerAction>
+
+    public init(store: Store<PomodoroTimerState, PomodoroTimerAction>) {
+        self.store = store
+    }
 
     public var body: some View {
-        VStack {
-            Text("State: \(vm.pomodoroState.name)")
-            Text(vm.timerText)
-                .padding()
+        WithViewStore(store) { viewStore in
+            VStack {
+                Text("State: \(viewStore.pomodoroMode.name)")
+                Text(viewStore.timerText)
+                    .padding()
 
-            switch vm.timerState {
-            case .start:
-                Button("Stop") {
-                    vm.toggleTimerState()
-                }
-            case .stop:
-                Button("Start") {
-                    vm.toggleTimerState()
+                if viewStore.isTimerActive {
+                    Button("Stop") {
+                        viewStore.send(.stopTimer)
+                    }
+                } else {
+                    Button("Start") {
+                        viewStore.send(.startTimer)
+                    }
                 }
             }
-        }
-        .onAppear {
-            vm.startTimer()
+            .onAppear {
+                viewStore.send(.startTimer)
+            }
         }
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        TimerView()
-.previewInterfaceOrientation(.portrait)
+        TimerView(store: .init(
+            initialState: .init(
+                isTimerActive: false,
+                pomodoroMode: .working,
+                timerText: "00:00",
+                timerSettings: .default()
+            ),
+            reducer: pomodoroTimerReducer,
+            environment: .init(
+                apiClient: FirebaseAPIClient.live,
+                mainQueue: DispatchQueue.main.eraseToAnyScheduler()
+            )
+        ))
+            .previewInterfaceOrientation(.portrait)
     }
 }

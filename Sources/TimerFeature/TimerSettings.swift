@@ -1,4 +1,4 @@
-struct TimerSettings {
+struct TimerSettings: Equatable {
     let maxIntervalSeconds = 60 * 60 * 5
 
     var intervalSeconds: Int
