@@ -7,7 +7,7 @@ public struct PomodoroTimerState: Equatable {
     var isTimerActive = false
     var pomodoroMode: PomodoroMode = .working
     var timerText = "00:00"
-    var timerSettings: TimerSettings = .default()
+    var timerSettings: PomodoroTimerSettings = .default()
 
     enum PomodoroMode: CaseIterable, Equatable {
         case working

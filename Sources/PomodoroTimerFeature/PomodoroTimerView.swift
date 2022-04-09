@@ -3,7 +3,7 @@ import SwiftUI
 import APIClient
 import ComposableArchitecture
 
-public struct TimerView: View {
+public struct PomodoroTimerView: View {
     public var store: Store<PomodoroTimerState, PomodoroTimerAction>
 
     public init(store: Store<PomodoroTimerState, PomodoroTimerAction>) {
@@ -34,9 +34,9 @@ public struct TimerView: View {
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
+struct PomodoroTimerView_Previews: PreviewProvider {
     static var previews: some View {
-        TimerView(store: .init(
+        PomodoroTimerView(store: .init(
             initialState: .init(
                 isTimerActive: false,
                 pomodoroMode: .working,

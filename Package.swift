@@ -14,7 +14,7 @@ let package = Package(
             name: "App",
             targets: [
                 "DataFeature",
-                "TimerFeature",
+                "PomodoroTimerFeature",
             ]),
     ],
     dependencies: [
@@ -43,15 +43,16 @@ let package = Package(
                 "SwiftHelper"
             ]),
         .target(
-            name: "SwiftHelper",
-            dependencies: []),
-        .target(
-            name: "TimerFeature",
+            name: "PomodoroTimerFeature",
             dependencies: [
                 "APIClient",
                 "SwiftHelper",
                 .product(name: "FirebaseAuth", package: "Firebase"),
             ]),
+        .target(
+            name: "SwiftHelper",
+            dependencies: []),
+
         
         // Test
     ]

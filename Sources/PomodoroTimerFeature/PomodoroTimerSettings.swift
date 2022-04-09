@@ -1,4 +1,4 @@
-struct TimerSettings: Equatable {
+struct PomodoroTimerSettings: Equatable {
     let maxIntervalSeconds = 60 * 60 * 5
 
     var intervalSeconds: Int

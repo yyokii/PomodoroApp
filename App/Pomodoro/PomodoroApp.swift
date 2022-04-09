@@ -2,7 +2,7 @@ import SwiftUI
 
 import DataFeature
 import Firebase
-import TimerFeature
+import PomodoroTimerFeature
 
 @main
 struct PomodoroApp: App {
