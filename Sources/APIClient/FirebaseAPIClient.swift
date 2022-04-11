@@ -26,7 +26,6 @@ public struct FirebaseAPIClient {
 }
 
 public extension FirebaseAPIClient {
-
     static let live = Self(
         signInAnonymously: {
             Auth.auth().signInAnonymously()

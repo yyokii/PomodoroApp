@@ -34,6 +34,21 @@ public struct PomodoroTimerView: View {
     }
 }
 
+extension PomodoroTimerView {
+    public static var demoView = PomodoroTimerView(store: .init(
+        initialState: .init(
+            isTimerActive: false,
+            pomodoroMode: .working,
+            timerText: "00:00",
+            timerSettings: .default()
+        ),
+        reducer: pomodoroTimerReducer,
+        environment: .init(
+            apiClient: FirebaseAPIClient.live,
+            mainQueue: DispatchQueue.main.eraseToAnyScheduler()
+        )))
+}
+
 struct PomodoroTimerView_Previews: PreviewProvider {
     static var previews: some View {
         PomodoroTimerView(store: .init(

@@ -8,6 +8,6 @@
       location = "group:BuildTools">
    </FileRef>
    <FileRef
-      location = "group:App/Pomodoro.xcodeproj">
+      location = "group:App/MacOSDevelop.xcodeproj">
    </FileRef>
 </Workspace>
