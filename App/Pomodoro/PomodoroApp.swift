@@ -1,6 +1,6 @@
 import SwiftUI
 
-import DataFeature
+import MyDataFeature
 import Firebase
 import PomodoroTimerFeature
 
@@ -13,7 +13,7 @@ struct PomodoroApp: App {
 
     var body: some Scene {
         WindowGroup {
-            DataView()
+//            DataView()
 //            TimerView()
         }
     }

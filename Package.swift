@@ -13,7 +13,7 @@ let package = Package(
         .library(
             name: "App",
             targets: [
-                "DataFeature",
+                "MyDataFeature",
                 "PomodoroTimerFeature",
             ]),
     ],
@@ -37,7 +37,7 @@ let package = Package(
                 .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
             ]),
         .target(
-            name: "DataFeature",
+            name: "MyDataFeature",
             dependencies: [
                 "APIClient",
                 "SwiftHelper"

@@ -47,8 +47,7 @@ struct PomodoroTimerView_Previews: PreviewProvider {
             environment: .init(
                 apiClient: FirebaseAPIClient.live,
                 mainQueue: DispatchQueue.main.eraseToAnyScheduler()
-            )
-        ))
+            )))
             .previewInterfaceOrientation(.portrait)
     }
 }
