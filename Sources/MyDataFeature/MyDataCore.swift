@@ -83,6 +83,8 @@ let historyReducer = Reducer<HistoryState, HistoryAction, HistoryEnvironment> { 
 public struct MyDataState: Equatable {
     var historyState = HistoryState()
     var statisticsState = StatisticsState()
+
+    public init() {}
 }
 
 public enum MyDataAction: Equatable {
@@ -90,12 +92,17 @@ public enum MyDataAction: Equatable {
     case statistics(StatisticsAction)
 }
 
-struct MyDataEnvironment {
+public struct MyDataEnvironment {
     var apiClient: FirebaseAPIClient
     var mainQueue: AnySchedulerOf<DispatchQueue>
+
+    public init(apiClient: FirebaseAPIClient, mainQueue: AnySchedulerOf<DispatchQueue>) {
+        self.apiClient = apiClient
+        self.mainQueue = mainQueue
+    }
 }
 
-let myDataReducer: Reducer<MyDataState, MyDataAction, MyDataEnvironment>  = .combine(
+public let myDataReducer: Reducer<MyDataState, MyDataAction, MyDataEnvironment> = .combine(
     historyReducer.pullback(
         state: \MyDataState.historyState,
         action: /MyDataAction.history,

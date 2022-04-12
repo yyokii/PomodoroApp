@@ -13,7 +13,6 @@ let package = Package(
         .library(
             name: "App",
             targets: [
-                "MyDataFeature",
                 "PomodoroTimerFeature",
             ]),
     ],
@@ -46,6 +45,7 @@ let package = Package(
             name: "PomodoroTimerFeature",
             dependencies: [
                 "APIClient",
+                "MyDataFeature",
                 "SwiftHelper",
                 .product(name: "FirebaseAuth", package: "Firebase"),
             ]),

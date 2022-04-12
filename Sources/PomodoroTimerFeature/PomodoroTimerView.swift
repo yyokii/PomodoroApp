@@ -1,10 +1,18 @@
 import SwiftUI
 
 import APIClient
+import MyDataFeature
 import ComposableArchitecture
+import SwiftHelper
 
 public struct PomodoroTimerView: View {
     public var store: Store<PomodoroTimerState, PomodoroTimerAction>
+
+    let demoMyDataView = MyDataView(store: .init(initialState: .init(),
+                                                 reducer: myDataReducer,
+                                                 environment: .init(apiClient: FirebaseAPIClient.live,
+                                                                    mainQueue: DispatchQueue.main.eraseToAnyScheduler())
+                                                ))
 
     public init(store: Store<PomodoroTimerState, PomodoroTimerAction>) {
         self.store = store
@@ -26,7 +34,14 @@ public struct PomodoroTimerView: View {
                         viewStore.send(.startTimer)
                     }
                 }
+
+                Button("Open Data View") {
+                    demoMyDataView
+                        .frame(minWidth: 500, maxWidth: .infinity, minHeight: 500, maxHeight: .infinity)
+                        .openInWindow(title: "Data View", sender: self)
+                }
             }
+            .frame(width: 350, height: 500)
             .onAppear {
                 viewStore.send(.startTimer)
             }
