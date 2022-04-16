@@ -14,7 +14,6 @@ let package = Package(
             name: "App",
             targets: [
                 "PomodoroTimerFeature",
-                "AppFeature"
             ]),
     ],
     dependencies: [
