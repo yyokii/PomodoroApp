@@ -14,6 +14,7 @@ let package = Package(
             name: "App",
             targets: [
                 "PomodoroTimerFeature",
+                "AppFeature"
             ]),
     ],
     dependencies: [
@@ -21,6 +22,12 @@ let package = Package(
         .package(url: "https://github.com/pointfreeco/swift-composable-architecture.git", from: "0.34.0")
     ],
     targets: [
+        .target(
+            name: "AccountFeature",
+            dependencies: [
+                "APIClient",
+                .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+            ]),
         .target(
             name: "APIClient",
             dependencies: [
@@ -32,7 +39,10 @@ let package = Package(
         .target(
             name: "AppFeature",
             dependencies: [
+                "AccountFeature",
                 "APIClient",
+                "MyDataFeature",
+                "PomodoroTimerFeature",
                 .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
             ]),
         .target(
