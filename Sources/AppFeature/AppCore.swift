@@ -4,10 +4,12 @@ import AccountFeature
 import MyDataFeature
 import PomodoroTimerFeature
 
-struct AppState: Equatable {
-    var account: AccountState
-    var myData: MyDataState
-    var pomodoroTimer: PomodoroTimerState
+public struct AppState: Equatable {
+    var account: AccountState = AccountState()
+    var myData: MyDataState = MyDataState()
+    var pomodoroTimer: PomodoroTimerState = PomodoroTimerState()
+
+    public init() {}
 }
 
 public enum AppAction: Equatable {
@@ -16,12 +18,20 @@ public enum AppAction: Equatable {
     case pomodoroTimer(PomodoroTimerAction)
 }
 
-struct AppEnvironment {
+public struct AppEnvironment {
     var apiClient: FirebaseAPIClient
     var mainQueue: AnySchedulerOf<DispatchQueue>
+
+    public init(
+        apiClient: FirebaseAPIClient,
+        mainQueue: AnySchedulerOf<DispatchQueue>
+    ) {
+        self.apiClient = apiClient
+        self.mainQueue = mainQueue
+    }
 }
 
-let appReducer: Reducer<AppState, AppAction, AppEnvironment> = .combine(
+public let appReducer: Reducer<AppState, AppAction, AppEnvironment> = .combine(
     accountReducer.pullback(
         state: \AppState.account,
         action: /AppAction.account,
@@ -32,21 +42,21 @@ let appReducer: Reducer<AppState, AppAction, AppEnvironment> = .combine(
             )
         }
     ),
-    accountReducer.pullback(
-        state: \AppState.account,
-        action: /AppAction.account,
+    myDataReducer.pullback(
+        state: \AppState.myData,
+        action: /AppAction.myData,
         environment: { environment in
-            AccountEnvironment(
+            MyDataEnvironment (
                 apiClient: environment.apiClient,
                 mainQueue: environment.mainQueue
             )
         }
     ),
-    accountReducer.pullback(
-        state: \AppState.account,
-        action: /AppAction.account,
+    pomodoroTimerReducer.pullback(
+        state: \AppState.pomodoroTimer,
+        action: /AppAction.pomodoroTimer,
         environment: { environment in
-            AccountEnvironment(
+            PomodoroTimerEnvironment(
                 apiClient: environment.apiClient,
                 mainQueue: environment.mainQueue
             )

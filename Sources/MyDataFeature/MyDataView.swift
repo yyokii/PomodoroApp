@@ -4,7 +4,7 @@ import APIClient
 import ComposableArchitecture
 
 public struct MyDataView: View {
-    public var store: Store<MyDataState, MyDataAction>
+    let store: Store<MyDataState, MyDataAction>
 
     public init(store: Store<MyDataState, MyDataAction>) {
         self.store = store

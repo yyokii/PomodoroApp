@@ -1,6 +1,8 @@
 import Cocoa
 import SwiftUI
 
+import AppFeature
+import Firebase
 import PomodoroTimerFeature
 
 @main
@@ -10,8 +12,19 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var statusBarItem: NSStatusItem!
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
+        FirebaseApp.configure()
+
         // ポップオーバーの中にSwiftUIビューを設定
-        let contentView = PomodoroTimerView.demoView
+        let contentView = AppView(
+            store: .init(
+                initialState: AppState(),
+                reducer: appReducer,
+                environment: .init(
+                    apiClient: .live,
+                    mainQueue: DispatchQueue.main.eraseToAnyScheduler()
+                )
+            )
+        )
         // ポップオーバーを設定
         let popover = NSPopover()
         popover.contentSize = NSSize(width: 350, height: 500)

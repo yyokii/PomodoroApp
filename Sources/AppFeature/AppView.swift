@@ -5,14 +5,17 @@ import ComposableArchitecture
 import MyDataFeature
 import PomodoroTimerFeature
 
-#warning("不要かもしれない")
-
-struct AppView: View {
+public struct AppView: View {
     let store: Store<AppState, AppAction>
 
-    var body: some View {
+    public init (store: Store<AppState, AppAction>) {
+        self.store = store
+    }
+
+    public var body: some View {
         WithViewStore(store) { viewStore in
-            
+            PomodoroTimerView(pomodoroTimerStore: pomodoroTimerStore,
+                              myDataStore: myDataStore)
         }
     }
 }

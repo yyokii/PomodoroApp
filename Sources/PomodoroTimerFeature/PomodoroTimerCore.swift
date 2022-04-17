@@ -4,12 +4,12 @@ import ComposableArchitecture
 import SwiftHelper
 
 public struct PomodoroTimerState: Equatable {
-    var isTimerActive = false
-    var pomodoroMode: PomodoroMode = .working
-    var timerText = "00:00"
-    var timerSettings: PomodoroTimerSettings = .default()
+    public var isTimerActive = false
+    public var pomodoroMode: PomodoroMode = .working
+    public var timerText = "00:00"
+    public var timerSettings: PomodoroTimerSettings = .default()
 
-    enum PomodoroMode: CaseIterable, Equatable {
+    public enum PomodoroMode: CaseIterable, Equatable {
         case working
         case shortBreak
         case longBreak
@@ -25,6 +25,19 @@ public struct PomodoroTimerState: Equatable {
             }
         }
     }
+
+    public init() {}
+
+    public init(
+        isTimerActive: Bool,
+        pomodoroMode: PomodoroMode,
+        timerText: String,
+        timerSettings: PomodoroTimerSettings) {
+            self.isTimerActive = isTimerActive
+            self.pomodoroMode = pomodoroMode
+            self.timerText = timerText
+            self.timerSettings = timerSettings
+        }
 }
 
 public enum PomodoroTimerAction: Equatable {
@@ -33,14 +46,19 @@ public enum PomodoroTimerAction: Equatable {
     case timerTick
 }
 
-struct PomodoroTimerEnvironment {
+public struct PomodoroTimerEnvironment {
     var apiClient: FirebaseAPIClient
     var mainQueue: AnySchedulerOf<DispatchQueue>
+
+    public init(apiClient: FirebaseAPIClient, mainQueue: AnySchedulerOf<DispatchQueue>) {
+        self.apiClient = apiClient
+        self.mainQueue = mainQueue
+    }
 }
 
-typealias PomodoroTimerReducer = Reducer<PomodoroTimerState, PomodoroTimerAction, PomodoroTimerEnvironment>
+public typealias PomodoroTimerReducer = Reducer<PomodoroTimerState, PomodoroTimerAction, PomodoroTimerEnvironment>
 
-let pomodoroTimerReducer = PomodoroTimerReducer { state, action, environment in
+public let pomodoroTimerReducer = PomodoroTimerReducer { state, action, environment in
     struct TimerId: Hashable {}
 
     switch action {
@@ -82,7 +100,7 @@ let pomodoroTimerReducer = PomodoroTimerReducer { state, action, environment in
 
         // 設定しているタイマーが0までカウントダウンした場合
         state.pomodoroMode = state.pomodoroMode.next()
-        #warning("タイマー設定を設定画面から取得して設定し直す。現状固定値を設定")
+#warning("タイマー設定を設定画面から取得して設定し直す。現状固定値を設定")
         state.timerSettings = .init(intervalSeconds: 5, shortBreakIntervalSeconds: 6, longBreakIntervalSeconds: 7)
         switch state.pomodoroMode {
         case .working:

@@ -2,7 +2,9 @@ import APIClient
 import ComposableArchitecture
 import SwiftHelper
 
-public struct AccountState: Equatable {}
+public struct AccountState: Equatable {
+    public init() {}
+}
 
 public enum AccountAction: Equatable {}
 

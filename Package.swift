@@ -13,7 +13,7 @@ let package = Package(
         .library(
             name: "App",
             targets: [
-                "PomodoroTimerFeature",
+                "AppFeature",
             ]),
     ],
     dependencies: [

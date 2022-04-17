@@ -1,25 +1,23 @@
 import SwiftUI
 
 import APIClient
-import MyDataFeature
 import ComposableArchitecture
+import MyDataFeature
 import SwiftHelper
 
 public struct PomodoroTimerView: View {
-    public var store: Store<PomodoroTimerState, PomodoroTimerAction>
+    let pomodoroTimerStore: Store<PomodoroTimerState, PomodoroTimerAction>
 
-    let demoMyDataView = MyDataView(store: .init(initialState: .init(),
-                                                 reducer: myDataReducer,
-                                                 environment: .init(apiClient: FirebaseAPIClient.live,
-                                                                    mainQueue: DispatchQueue.main.eraseToAnyScheduler())
-                                                ))
+    let myDataStore: Store<MyDataState, MyDataAction>
 
-    public init(store: Store<PomodoroTimerState, PomodoroTimerAction>) {
-        self.store = store
+    public init(pomodoroTimerStore: Store<PomodoroTimerState, PomodoroTimerAction>,
+                myDataStore: Store<MyDataState, MyDataAction>) {
+        self.pomodoroTimerStore = pomodoroTimerStore
+        self.myDataStore = myDataStore
     }
 
     public var body: some View {
-        WithViewStore(store) { viewStore in
+        WithViewStore(pomodoroTimerStore) { viewStore in
             VStack {
                 Text("State: \(viewStore.pomodoroMode.name)")
                 Text(viewStore.timerText)
@@ -36,7 +34,7 @@ public struct PomodoroTimerView: View {
                 }
 
                 Button("Open Data View") {
-                    demoMyDataView
+                    MyDataView(store: myDataStore)
                         .frame(minWidth: 500, maxWidth: .infinity, minHeight: 500, maxHeight: .infinity)
                         .openInWindow(title: "Data View", sender: self)
                 }
@@ -49,8 +47,10 @@ public struct PomodoroTimerView: View {
     }
 }
 
-extension PomodoroTimerView {
-    public static var demoView = PomodoroTimerView(store: .init(
+#if DEBUG
+
+struct PomodoroTimerView_Previews: PreviewProvider {
+    static let pomodoroTimerStore: Store<PomodoroTimerState, PomodoroTimerAction> = .init(
         initialState: .init(
             isTimerActive: false,
             pomodoroMode: .working,
@@ -60,24 +60,19 @@ extension PomodoroTimerView {
         reducer: pomodoroTimerReducer,
         environment: .init(
             apiClient: FirebaseAPIClient.live,
-            mainQueue: DispatchQueue.main.eraseToAnyScheduler()
-        )))
-}
+            mainQueue: DispatchQueue.main.eraseToAnyScheduler()))
 
-struct PomodoroTimerView_Previews: PreviewProvider {
+    static let myDataStore: Store<MyDataState, MyDataAction> = .init(
+        initialState: .init(),
+        reducer: myDataReducer,
+        environment: .init(apiClient: FirebaseAPIClient.live,
+                           mainQueue: DispatchQueue.main.eraseToAnyScheduler()))
+
     static var previews: some View {
-        PomodoroTimerView(store: .init(
-            initialState: .init(
-                isTimerActive: false,
-                pomodoroMode: .working,
-                timerText: "00:00",
-                timerSettings: .default()
-            ),
-            reducer: pomodoroTimerReducer,
-            environment: .init(
-                apiClient: FirebaseAPIClient.live,
-                mainQueue: DispatchQueue.main.eraseToAnyScheduler()
-            )))
+        PomodoroTimerView(pomodoroTimerStore: pomodoroTimerStore,
+                          myDataStore: myDataStore)
             .previewInterfaceOrientation(.portrait)
     }
 }
+
+#endif
