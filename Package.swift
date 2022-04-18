@@ -30,6 +30,7 @@ let package = Package(
         .target(
             name: "APIClient",
             dependencies: [
+                "Model",
                 .product(name: "FirebaseAuth", package: "Firebase"),
                 .product(name: "FirebaseAuthCombine-Community", package: "Firebase"),
                 .product(name: "FirebaseFirestore", package: "Firebase"),
@@ -43,6 +44,11 @@ let package = Package(
                 "MyDataFeature",
                 "PomodoroTimerFeature",
                 .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+            ]),
+        .target(
+            name: "Model",
+            dependencies: [
+                .product(name: "FirebaseAuth", package: "Firebase"),
             ]),
         .target(
             name: "MyDataFeature",

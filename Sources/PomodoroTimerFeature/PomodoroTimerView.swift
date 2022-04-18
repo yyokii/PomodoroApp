@@ -41,7 +41,7 @@ public struct PomodoroTimerView: View {
             }
             .frame(width: 350, height: 500)
             .onAppear {
-                viewStore.send(.startTimer)
+                viewStore.send(.onAppear)
             }
         }
     }

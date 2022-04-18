@@ -16,6 +16,9 @@ public struct AppView: View {
         WithViewStore(store) { viewStore in
             PomodoroTimerView(pomodoroTimerStore: pomodoroTimerStore,
                               myDataStore: myDataStore)
+                .onAppear {
+                    viewStore.send(.onAppear)
+                }
         }
     }
 }

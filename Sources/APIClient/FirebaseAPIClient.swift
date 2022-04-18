@@ -4,14 +4,7 @@ import ComposableArchitecture
 import FirebaseAuth
 import FirebaseAuthCombineSwift
 import FirebaseFirestore
-
-public struct Failure: Error, Equatable {
-    let error: String
-}
-
-public struct None: Equatable {
-    public init() {}
-}
+import Model
 
 public struct FirebaseAPIClient {
     public var signUp: (_ email: String, _ password: String) -> Effect<None, APIError>

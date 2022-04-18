@@ -1,6 +1,9 @@
+import Combine
+
 import APIClient
 import ComposableArchitecture
 import AccountFeature
+import Model
 import MyDataFeature
 import PomodoroTimerFeature
 
@@ -16,6 +19,10 @@ public enum AppAction: Equatable {
     case account(AccountAction)
     case myData(MyDataAction)
     case pomodoroTimer(PomodoroTimerAction)
+    case signInAnonymouslyResponse(Result<None, APIError>)
+
+    case onAppear
+    case onDisappear
 }
 
 public struct AppEnvironment {
@@ -63,12 +70,29 @@ public let appReducer: Reducer<AppState, AppAction, AppEnvironment> = .combine(
         }
     ),
     .init { state, action, environment in
+
+        struct AccountCancelId: Hashable {}
+
         switch action {
         case .account:
             return .none
         case .myData:
             return .none
         case .pomodoroTimer:
+            return .none
+        case .signInAnonymouslyResponse(.success):
+            print("匿名ログインしました")
+            return .none
+        case .signInAnonymouslyResponse(.failure):
+            return .none
+        case .onAppear:
+            return environment.apiClient
+                .signInAnonymously()
+                .receive(on: environment.mainQueue)
+                .catchToEffect()
+                .map(AppAction.signInAnonymouslyResponse)
+                .cancellable(id: AccountCancelId())
+        case .onDisappear:
             return .none
         }
     }

@@ -44,6 +44,9 @@ public enum PomodoroTimerAction: Equatable {
     case startTimer
     case stopTimer
     case timerTick
+
+    case onAppear
+    case onDisappear
 }
 
 public struct PomodoroTimerEnvironment {
@@ -110,6 +113,11 @@ public let pomodoroTimerReducer = PomodoroTimerReducer { state, action, environm
         case .longBreak:
             state.timerText = state.timerSettings.longBreakIntervalSecondsMinutesSecond
         }
+        return .none
+
+    case .onAppear:
+        return .init(value: .startTimer)
+    case .onDisappear:
         return .none
     }
 }
