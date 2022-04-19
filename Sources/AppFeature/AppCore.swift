@@ -99,7 +99,7 @@ public let appReducer: Reducer<AppState, AppAction, AppEnvironment> = .combine(
                 return .none
             }
         case .signInAnonymouslyResponse(.success):
-            print("匿名ログインしました")
+            OSLog.debug("Anonymously signed in.")
             return .none
         case .signInAnonymouslyResponse(.failure):
             return .none
