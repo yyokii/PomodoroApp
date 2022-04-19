@@ -19,6 +19,8 @@ public enum AppAction: Equatable {
     case account(AccountAction)
     case myData(MyDataAction)
     case pomodoroTimer(PomodoroTimerAction)
+
+    case checkUserStatusResponse(Result<AppUser, Never>)
     case signInAnonymouslyResponse(Result<None, APIError>)
 
     case onAppear
@@ -80,6 +82,21 @@ public let appReducer: Reducer<AppState, AppAction, AppEnvironment> = .combine(
             return .none
         case .pomodoroTimer:
             return .none
+        case .checkUserStatusResponse(.success(let appUser)):
+            if appUser.status == .uninitialized {
+                print("✅ User not signed in.")
+                return environment.apiClient
+                    .signInAnonymously()
+                    .receive(on: environment.mainQueue)
+                    .catchToEffect()
+                    .map(AppAction.signInAnonymouslyResponse)
+                    .cancellable(id: AccountCancelId())
+
+            } else {
+                print("✅ User signed in.\nUser status:\(appUser.status)\nUser ID: \(appUser.id)\n"
+                )
+                return .none
+            }
         case .signInAnonymouslyResponse(.success):
             print("匿名ログインしました")
             return .none
@@ -87,11 +104,10 @@ public let appReducer: Reducer<AppState, AppAction, AppEnvironment> = .combine(
             return .none
         case .onAppear:
             return environment.apiClient
-                .signInAnonymously()
+                .checkUserStatus()
                 .receive(on: environment.mainQueue)
                 .catchToEffect()
-                .map(AppAction.signInAnonymouslyResponse)
-                .cancellable(id: AccountCancelId())
+                .map(AppAction.checkUserStatusResponse)
         case .onDisappear:
             return .none
         }

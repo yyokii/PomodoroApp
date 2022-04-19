@@ -1,9 +1,19 @@
 import FirebaseAuth
 
-struct AppUser {
-    let id: String
-    let name: String
-    let status: UserStatus
+public struct AppUser: Equatable {
+    public let id: String
+    public let name: String
+    public let status: UserStatus
+
+    public init(
+        id: String,
+        name: String,
+        status: UserStatus
+    ) {
+        self.id = id
+        self.name = name
+        self.status = status
+    }
 
     static func getUninitializedData() -> Self {
         .init(id: "",
@@ -12,28 +22,28 @@ struct AppUser {
     }
 }
 
-enum UserStatus {
-    // ユーザー情報が未作成
-    case uninitialized
-    // ログイン状態
-    case authenticated
-    // 匿名ログイン状態
-    case authenticatedAnonymously
+extension AppUser {
+    public enum UserStatus {
+        // ユーザー情報が未作成
+        case uninitialized
+        // ログイン状態
+        case authenticated
+        // 匿名ログイン状態
+        case authenticatedAnonymously
 
-    var statusName: String {
-        switch self {
-        case.uninitialized:
-            return "未ログイン"
-        case.authenticated:
-            return "ログイン済み"
-        case .authenticatedAnonymously:
-            return "ゲスト"
+        var statusName: String {
+            switch self {
+            case.uninitialized:
+                return "未ログイン"
+            case.authenticated:
+                return "ログイン済み"
+            case .authenticatedAnonymously:
+                return "ゲスト"
+            }
         }
     }
-}
 
-extension AppUser {
-    init(from firebaseUser: User?) {
+    public init(from firebaseUser: User?) {
         if  firebaseUser == nil {
             // 未認証
             id = ""
