@@ -1,4 +1,5 @@
 import Combine
+import os
 
 import APIClient
 import ComposableArchitecture
@@ -6,6 +7,7 @@ import AccountFeature
 import Model
 import MyDataFeature
 import PomodoroTimerFeature
+import SwiftHelper
 
 public struct AppState: Equatable {
     var account: AccountState = AccountState()
@@ -84,7 +86,7 @@ public let appReducer: Reducer<AppState, AppAction, AppEnvironment> = .combine(
             return .none
         case .checkUserStatusResponse(.success(let appUser)):
             if appUser.status == .uninitialized {
-                print("✅ User not signed in.")
+                OSLog.debug("User not signed in.")
                 return environment.apiClient
                     .signInAnonymously()
                     .receive(on: environment.mainQueue)
@@ -93,8 +95,7 @@ public let appReducer: Reducer<AppState, AppAction, AppEnvironment> = .combine(
                     .cancellable(id: AccountCancelId())
 
             } else {
-                print("✅ User signed in.\nUser status:\(appUser.status)\nUser ID: \(appUser.id)\n"
-                )
+                OSLog.debug("User signed in.\nUser status:\(appUser.status)\nUser ID: \(appUser.id)\n")
                 return .none
             }
         case .signInAnonymouslyResponse(.success):

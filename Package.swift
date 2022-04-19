@@ -43,6 +43,7 @@ let package = Package(
                 "APIClient",
                 "MyDataFeature",
                 "PomodoroTimerFeature",
+                "SwiftHelper",
                 .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
             ]),
         .target(
