@@ -22,17 +22,22 @@ public struct FirebaseAPIClient {
 }
 
 public extension FirebaseAPIClient {
+    static var appUser: AppUser = .init(id: "", name: "", status: .uninitialized)
+
     static let live = Self(
         checkUserStatus: {
             let firebaseUser = Auth.auth().currentUser
             let appUser: AppUser = .init(from: firebaseUser)
+            FirebaseAPIClient.appUser = appUser
             return Just(appUser)
                 .eraseToEffect()
         },
         signInAnonymously: {
             Auth.auth().signInAnonymously()
-                .map { _ in
-                    None()
+                .map { result in
+                    let appUser: AppUser = .init(from: result.user)
+                    FirebaseAPIClient.appUser = appUser
+                    return None()
                 }
                 .mapError { error in
                     APIError.init(error: error)
