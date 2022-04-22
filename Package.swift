@@ -50,6 +50,8 @@ let package = Package(
             name: "Model",
             dependencies: [
                 .product(name: "FirebaseAuth", package: "Firebase"),
+                .product(name: "FirebaseFirestore", package: "Firebase"),
+                .product(name: "FirebaseFirestoreSwift-Beta", package: "Firebase"),
             ]),
         .target(
             name: "MyDataFeature",
