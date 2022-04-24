@@ -19,7 +19,7 @@ public struct PomodoroTimerView: View {
     public var body: some View {
         WithViewStore(pomodoroTimerStore) { viewStore in
             VStack {
-                Text("State: \(viewStore.pomodoroMode.name)")
+                Text("State: \(viewStore.pomodoroMode.mode.name)")
                 Text(viewStore.timerText)
                     .padding()
 
@@ -53,7 +53,7 @@ struct PomodoroTimerView_Previews: PreviewProvider {
     static let pomodoroTimerStore: Store<PomodoroTimerState, PomodoroTimerAction> = .init(
         initialState: .init(
             isTimerActive: false,
-            pomodoroMode: .working,
+            pomodoroMode: .init(mode: .working, startDate: nil, endDate: nil),
             timerText: "00:00",
             timerSettings: .default()
         ),

@@ -7,7 +7,7 @@ import SwiftHelper
 
 public struct PomodoroTimerState: Equatable {
     public var isTimerActive = false
-    public var pomodoroMode: PomodoroMode = .working
+    public var pomodoroMode: PomodoroMode = .init(mode: .working, startDate: nil, endDate: nil)
     public var timerText = "00:00"
     public var timerSettings: PomodoroTimerSettings = .default()
 
@@ -25,22 +25,34 @@ public struct PomodoroTimerState: Equatable {
         }
 }
 
-extension PomodoroTimerState {
-    public enum PomodoroMode: CaseIterable, Equatable {
-        case working
-        case shortBreak
-        case longBreak
+public extension PomodoroTimerState {
+    public struct PomodoroMode: Equatable {
+        enum Mode: CaseIterable, Equatable {
+            case working
+            case shortBreak
+            case longBreak
 
-        #warning("ローカライズ対応")
-        var name: String {
-            switch self {
-            case .working:
-                return "作業中"
-            case .shortBreak:
-                return "短い休憩"
-            case .longBreak:
-                return "長い休憩"
+            #warning("ローカライズ対応")
+            var name: String {
+                switch self {
+                case .working:
+                    return "作業中"
+                case .shortBreak:
+                    return "短い休憩"
+                case .longBreak:
+                    return "長い休憩"
+                }
             }
+        }
+
+        var mode: Mode
+        var startDate: Date?
+        var endDate: Date?
+
+        mutating func next() {
+            self.mode = self.mode.next()
+            self.startDate = Date()
+            self.endDate = nil
         }
     }
 }
@@ -74,7 +86,7 @@ public let pomodoroTimerReducer = PomodoroTimerReducer { state, action, environm
 
     switch action {
     case .nextPomodoroMode:
-        state.pomodoroMode = state.pomodoroMode.next()
+        state.pomodoroMode.next()
         return .none
     case .saveHistory(let history):
         return environment.apiClient
@@ -84,6 +96,9 @@ public let pomodoroTimerReducer = PomodoroTimerReducer { state, action, environm
             .fireAndForget()
     case .startTimer:
         state.isTimerActive = true
+        if state.pomodoroMode.startDate == nil {
+            state.pomodoroMode.startDate = Date()
+        }
         return state.isTimerActive
         ? Effect.timer(
             id: TimerId(),
@@ -97,7 +112,7 @@ public let pomodoroTimerReducer = PomodoroTimerReducer { state, action, environm
         state.isTimerActive = false
         return Effect.cancel(id: TimerId())
     case .timerTick:
-        switch state.pomodoroMode {
+        switch state.pomodoroMode.mode {
         case .working:
             if state.timerSettings.intervalSeconds > 0 {
                 state.timerSettings.intervalSeconds -= 1
@@ -118,12 +133,15 @@ public let pomodoroTimerReducer = PomodoroTimerReducer { state, action, environm
             }
         }
 
-        OSLog.debug("Change pomodoro status")
+        // 残り時間が0である場合
+
+        let endDate = Calendar.appCalendar.date(byAdding: .second, value: -1, to: Date()) // 01 → (1秒経過) → 00 → (1秒経過) → ここ、という流れなので0秒表示になってから1秒経過しているので-1をする
+        state.pomodoroMode.endDate = endDate
         let finishedPomodoro: PomodoroTimerHistory = .init(
-            startTime: .init(date: Date()),
-            endTime: .init(date: Date()),
+            startTime: .init(date: state.pomodoroMode.startDate!),
+            endTime: .init(date: state.pomodoroMode.endDate!),
             category: ["demo"],
-            pomodoroState: "demo"
+            pomodoroState: state.pomodoroMode.mode.name
         )
         return .concatenate(
             .init(value: .saveHistory(finishedPomodoro)),
@@ -133,7 +151,7 @@ public let pomodoroTimerReducer = PomodoroTimerReducer { state, action, environm
     case .updatePomodoroSettings:
 #warning("タイマー設定を設定画面から取得して設定し直す。現状固定値を設定")
         state.timerSettings = .init(intervalSeconds: 5, shortBreakIntervalSeconds: 6, longBreakIntervalSeconds: 7)
-        switch state.pomodoroMode {
+        switch state.pomodoroMode.mode {
         case .working:
             state.timerText = state.timerSettings.intervalMinutesSecond
         case .shortBreak:
