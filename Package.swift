@@ -14,6 +14,7 @@ let package = Package(
             name: "App",
             targets: [
                 "AppFeature",
+                "Settings"
             ]),
     ],
     dependencies: [
@@ -43,6 +44,7 @@ let package = Package(
                 "APIClient",
                 "MyDataFeature",
                 "PomodoroTimerFeature",
+                "Settings",
                 "SwiftHelper",
                 .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
             ]),
@@ -67,6 +69,9 @@ let package = Package(
                 "SwiftHelper",
                 .product(name: "FirebaseAuth", package: "Firebase"),
             ]),
+        .target(
+            name: "Settings",
+            dependencies: []),
         .target(
             name: "SwiftHelper",
             dependencies: []),

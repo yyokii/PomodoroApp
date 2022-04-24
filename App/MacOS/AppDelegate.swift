@@ -5,7 +5,6 @@ import AppFeature
 import Firebase
 import PomodoroTimerFeature
 
-@main
 class AppDelegate: NSObject, NSApplicationDelegate {
 
     var popover: NSPopover!

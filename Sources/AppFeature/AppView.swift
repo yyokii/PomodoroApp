@@ -4,6 +4,7 @@ import SwiftUI
 import ComposableArchitecture
 import MyDataFeature
 import PomodoroTimerFeature
+import Settings
 
 public struct AppView: View {
     let store: Store<AppState, AppAction>
@@ -14,11 +15,18 @@ public struct AppView: View {
 
     public var body: some View {
         WithViewStore(store) { viewStore in
-            PomodoroTimerView(pomodoroTimerStore: pomodoroTimerStore,
-                              myDataStore: myDataStore)
-                .onAppear {
-                    viewStore.send(.onAppear)
+            VStack {
+                PomodoroTimerView(pomodoroTimerStore: pomodoroTimerStore,
+                                  myDataStore: myDataStore)
+
+                Button("Settings") {
+                    NSApp.sendAction(Selector(("showPreferencesWindow:")), to: nil, from: nil)
+                    NSApp.activate(ignoringOtherApps: true)
                 }
+            }
+            .onAppear {
+                viewStore.send(.onAppear)
+            }
         }
     }
 }
