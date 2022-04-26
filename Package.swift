@@ -71,13 +71,18 @@ let package = Package(
             ]),
         .target(
             name: "Settings",
-            dependencies: []),
+            dependencies: [
+                "Model",
+                "UserDefaultsClient",
+                .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+            ]),
         .target(
             name: "SwiftHelper",
             dependencies: []),
         .target(
             name: "UserDefaultsClient",
             dependencies: [
+                "Model",
                 .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
             ]),
         
