@@ -55,11 +55,12 @@ struct PomodoroTimerView_Previews: PreviewProvider {
             isTimerActive: false,
             pomodoroMode: .init(mode: .working, startDate: nil, endDate: nil),
             timerText: "00:00",
-            timerSettings: .default()
+            timerSettings: .default
         ),
         reducer: pomodoroTimerReducer,
         environment: .init(
-            apiClient: FirebaseAPIClient.live,
+            apiClient: .live,
+            userDefaults: .live(),
             mainQueue: DispatchQueue.main.eraseToAnyScheduler()))
 
     static let myDataStore: Store<MyDataState, MyDataAction> = .init(

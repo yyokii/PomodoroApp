@@ -8,7 +8,12 @@ struct MacOSApp: App {
 
     var body: some Scene {
         Settings {
-            SettingsView()
+            SettingsView(store: .init(initialState: SettingsState(),
+                                      reducer: settingsReducer,
+                                      environment: .init(
+                                        mainQueue: DispatchQueue.main.eraseToAnyScheduler())
+                                     )
+            )
         }
     }
 }

@@ -69,6 +69,7 @@ public let appReducer: Reducer<AppState, AppAction, AppEnvironment> = .combine(
         environment: { environment in
             PomodoroTimerEnvironment(
                 apiClient: environment.apiClient,
+                userDefaults: .live(),
                 mainQueue: environment.mainQueue
             )
         }

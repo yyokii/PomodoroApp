@@ -51,6 +51,7 @@ let package = Package(
         .target(
             name: "Model",
             dependencies: [
+                "SwiftHelper",
                 .product(name: "FirebaseAuth", package: "Firebase"),
                 .product(name: "FirebaseFirestore", package: "Firebase"),
                 .product(name: "FirebaseFirestoreSwift-Beta", package: "Firebase"),
@@ -67,12 +68,14 @@ let package = Package(
                 "APIClient",
                 "MyDataFeature",
                 "SwiftHelper",
+                "UserDefaultsClient",
                 .product(name: "FirebaseAuth", package: "Firebase"),
             ]),
         .target(
             name: "Settings",
             dependencies: [
                 "Model",
+                "SwiftHelper",
                 "UserDefaultsClient",
                 .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
             ]),

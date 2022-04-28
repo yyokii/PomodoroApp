@@ -4,12 +4,13 @@ import os
 import ComposableArchitecture
 import Model
 import SwiftHelper
+import UserDefaultsClient
 
 public struct PomodoroTimerState: Equatable {
     public var isTimerActive = false
     public var pomodoroMode: PomodoroMode = .init(mode: .working, startDate: nil, endDate: nil)
     public var timerText = "00:00"
-    public var timerSettings: PomodoroTimerSettings = .default()
+    public var timerSettings: PomodoroTimerSettings = .default
 
     public init() {}
 
@@ -26,7 +27,7 @@ public struct PomodoroTimerState: Equatable {
 }
 
 public extension PomodoroTimerState {
-    public struct PomodoroMode: Equatable {
+    struct PomodoroMode: Equatable {
         enum Mode: CaseIterable, Equatable {
             case working
             case shortBreak
@@ -71,10 +72,16 @@ public enum PomodoroTimerAction: Equatable {
 
 public struct PomodoroTimerEnvironment {
     var apiClient: FirebaseAPIClient
+    var userDefaults: UserDefaultsClient
     var mainQueue: AnySchedulerOf<DispatchQueue>
 
-    public init(apiClient: FirebaseAPIClient, mainQueue: AnySchedulerOf<DispatchQueue>) {
+    public init(
+        apiClient: FirebaseAPIClient,
+        userDefaults: UserDefaultsClient,
+        mainQueue: AnySchedulerOf<DispatchQueue>
+    ) {
         self.apiClient = apiClient
+        self.userDefaults = userDefaults
         self.mainQueue = mainQueue
     }
 }
@@ -122,13 +129,13 @@ public let pomodoroTimerReducer = PomodoroTimerReducer { state, action, environm
         case .shortBreak:
             if state.timerSettings.shortBreakIntervalSeconds > 0 {
                 state.timerSettings.shortBreakIntervalSeconds -= 1
-                state.timerText = state.timerSettings.shortBreakIntervalSecondsMinutesSecond
+                state.timerText = state.timerSettings.shortBreakIntervalMinutesSecond
                 return .none
             }
         case .longBreak:
             if state.timerSettings.longBreakIntervalSeconds > 0 {
                 state.timerSettings.longBreakIntervalSeconds -= 1
-                state.timerText = state.timerSettings.longBreakIntervalSecondsMinutesSecond
+                state.timerText = state.timerSettings.longBreakIntervalMinutesSecond
                 return .none
             }
         }
@@ -144,20 +151,19 @@ public let pomodoroTimerReducer = PomodoroTimerReducer { state, action, environm
             pomodoroState: state.pomodoroMode.mode.name
         )
         return .concatenate(
-            .init(value: .saveHistory(finishedPomodoro)),
+//            .init(value: .saveHistory(finishedPomodoro)),
             .init(value: .nextPomodoroMode),
             .init(value: .updatePomodoroSettings)
         )
     case .updatePomodoroSettings:
-#warning("タイマー設定を設定画面から取得して設定し直す。現状固定値を設定")
-        state.timerSettings = .init(intervalSeconds: 5, shortBreakIntervalSeconds: 6, longBreakIntervalSeconds: 7)
+        state.timerSettings = environment.userDefaults.pomodoroTimerSettings
         switch state.pomodoroMode.mode {
         case .working:
             state.timerText = state.timerSettings.intervalMinutesSecond
         case .shortBreak:
-            state.timerText = state.timerSettings.shortBreakIntervalSecondsMinutesSecond
+            state.timerText = state.timerSettings.shortBreakIntervalMinutesSecond
         case .longBreak:
-            state.timerText = state.timerSettings.longBreakIntervalSecondsMinutesSecond
+            state.timerText = state.timerSettings.longBreakIntervalMinutesSecond
         }
         return .none
     case .onAppear:
