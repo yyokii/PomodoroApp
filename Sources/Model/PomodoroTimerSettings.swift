@@ -34,7 +34,7 @@ public struct PomodoroTimerSettings: Codable, Equatable {
 
     private func convertSecondsToMinutesSeconds(seconds: Int) -> String {
         let minutesSeconds = ((seconds % 3600) / 60, (seconds % 3600) % 60)
-        let minutes = "\(minutesSeconds.0)".zeroPadding(toSize: 3)
+        let minutes = "\(minutesSeconds.0)".zeroPadding(toSize: 2)
         let seconds = "\(minutesSeconds.1)".zeroPadding(toSize: 2)
 
         return "\(minutes):\(seconds)"

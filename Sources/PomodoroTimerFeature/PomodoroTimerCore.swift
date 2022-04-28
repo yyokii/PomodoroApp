@@ -150,6 +150,7 @@ public let pomodoroTimerReducer = PomodoroTimerReducer { state, action, environm
             category: ["demo"],
             pomodoroState: state.pomodoroMode.mode.name
         )
+        #warning("save処理、暫定ではずしている")
         return .concatenate(
 //            .init(value: .saveHistory(finishedPomodoro)),
             .init(value: .nextPomodoroMode),
