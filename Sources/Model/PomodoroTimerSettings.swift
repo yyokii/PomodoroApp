@@ -5,10 +5,13 @@ public struct PomodoroTimerSettings: Codable, Equatable {
     public var intervalSeconds: Int
     public var shortBreakIntervalSeconds: Int
     public var longBreakIntervalSeconds: Int
-    
+    public var intervalCountBeforeLongBreak: Int
+
     public static var `default`: Self = .init(intervalSeconds: 25 * 60,
                                               shortBreakIntervalSeconds: 1 * 60,
-                                              longBreakIntervalSeconds: 15 * 60)
+                                              longBreakIntervalSeconds: 15 * 60,
+                                              intervalCountBeforeLongBreak: 4
+    )
 
     public var intervalMinutesSecond: String {
         return convertSecondsToMinutesSeconds(seconds: intervalSeconds)
@@ -25,11 +28,13 @@ public struct PomodoroTimerSettings: Codable, Equatable {
     public init(
         intervalSeconds: Int,
         shortBreakIntervalSeconds: Int,
-        longBreakIntervalSeconds: Int
+        longBreakIntervalSeconds: Int,
+        intervalCountBeforeLongBreak: Int
     ) {
         self.intervalSeconds = intervalSeconds
         self.shortBreakIntervalSeconds = shortBreakIntervalSeconds
         self.longBreakIntervalSeconds = longBreakIntervalSeconds
+        self.intervalCountBeforeLongBreak = intervalCountBeforeLongBreak
     }
 
     private func convertSecondsToMinutesSeconds(seconds: Int) -> String {

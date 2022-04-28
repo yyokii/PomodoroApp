@@ -11,6 +11,7 @@ public struct PomodoroTimerState: Equatable {
     public var pomodoroMode: PomodoroMode = .init(mode: .working, startDate: nil, endDate: nil)
     public var timerText = "00:00"
     public var timerSettings: PomodoroTimerSettings = .default
+    public var finishedIntervalCount: Int = 0 // 終了した(.working状態の)インターバル数
 
     public init() {}
 
@@ -50,8 +51,20 @@ public extension PomodoroTimerState {
         var startDate: Date?
         var endDate: Date?
 
-        mutating func next() {
-            self.mode = self.mode.next()
+        mutating func goWorking() {
+            self.mode = .working
+            self.startDate = Date()
+            self.endDate = nil
+        }
+
+        mutating func goShortBreak() {
+            self.mode = .shortBreak
+            self.startDate = Date()
+            self.endDate = nil
+        }
+
+        mutating func goLongBreak() {
+            self.mode = .longBreak
             self.startDate = Date()
             self.endDate = nil
         }
@@ -93,7 +106,25 @@ public let pomodoroTimerReducer = PomodoroTimerReducer { state, action, environm
 
     switch action {
     case .nextPomodoroMode:
-        state.pomodoroMode.next()
+        if state.pomodoroMode.mode == .working {
+            state.finishedIntervalCount += 1
+        }
+
+        if state.finishedIntervalCount >= state.timerSettings.intervalCountBeforeLongBreak {
+            // 長い休憩をとる条件は任意の回数(.working状態の)intervalを行うことである
+            state.pomodoroMode.goLongBreak()
+            state.finishedIntervalCount = 0
+            return .none
+        }
+
+        switch state.pomodoroMode.mode {
+        case .working:
+            state.pomodoroMode.goShortBreak()
+        case .shortBreak:
+            state.pomodoroMode.goWorking()
+        case .longBreak:
+            state.pomodoroMode.goWorking()
+        }
         return .none
     case .saveHistory(let history):
         return environment.apiClient

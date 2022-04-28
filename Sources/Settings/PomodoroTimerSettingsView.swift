@@ -19,13 +19,19 @@ struct PomodoroTimerSettingsView: View {
                 }
 
                 Picker("shortBreakTime", selection: viewStore.binding(\.$shortBreakTime)) {
-                    ForEach(1..<60) { minutes in
+                    ForEach(1..<61) { minutes in
                         Text("\(minutes)")
                     }
                 }
 
                 Picker("longBreakTime", selection: viewStore.binding(\.$longBreakTime)) {
-                    ForEach(1..<60) { minutes in
+                    ForEach(1..<61) { minutes in
+                        Text("\(minutes)")
+                    }
+                }
+
+                Picker("interval count before long break", selection: viewStore.binding(\.$intervalCountBeforeLongBreak)) {
+                    ForEach(0..<11) { minutes in
                         Text("\(minutes)")
                     }
                 }

@@ -11,6 +11,7 @@ public struct PomodoroTimerSettingsState: Equatable {
     @BindableState var intervalTime: Int = 0
     @BindableState var shortBreakTime: Int = 0
     @BindableState var longBreakTime: Int = 0
+    @BindableState var intervalCountBeforeLongBreak: Int = 0
 
     public init() {}
 }
@@ -41,7 +42,8 @@ public let pomodoroTimerSettingsReducer: Reducer<PomodoroTimerSettingsState, Pom
             return environment.userDefaults.setPomodoroTimerSettings(.init(
                 intervalSeconds: state.intervalTime * 60,
                 shortBreakIntervalSeconds: state.shortBreakTime * 60,
-                longBreakIntervalSeconds: state.longBreakTime * 60)
+                longBreakIntervalSeconds: state.longBreakTime * 60,
+                intervalCountBeforeLongBreak: state.intervalCountBeforeLongBreak)
             )
                 .fireAndForget()
         case .onAppear:
