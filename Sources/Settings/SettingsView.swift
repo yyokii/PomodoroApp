@@ -14,16 +14,8 @@ public struct SettingsView: View {
             TabView {
                 PomodoroTimerSettingsView(store: pomodoroTimerSettingsStore)
                     .tabItem {
-                        Label("General", systemImage: "gear")
+                        Label("Pomodoro", systemImage: "gear")
                     }
-                    .navigationTitle("ParentTitle")
-                    .navigationSubtitle("General")
-                Text("Advanced")
-                    .tabItem {
-                        Label("Advanced", systemImage: "star")
-                    }
-                    .navigationTitle("ParentTitle")
-                    .navigationSubtitle("Advanced")
             }
             .padding(20)
             .frame(width: 375, height: 150)
