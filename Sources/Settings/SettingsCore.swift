@@ -45,6 +45,9 @@ public let pomodoroTimerSettingsReducer: Reducer<PomodoroTimerSettingsState, Pom
     .init { state, action, environment in
         switch action {
         case .binding:
+            print("検証：　\(state.intervalTime)")
+            print("検証：　\(state.shortBreakTime)")
+            print("検証：　\(state.longBreakTime)")
             return environment.userDefaults.setPomodoroTimerSettings(.init(
                 intervalSeconds: state.intervalTime * 60,
                 shortBreakIntervalSeconds: state.shortBreakTime * 60,

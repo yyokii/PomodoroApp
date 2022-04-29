@@ -4,6 +4,7 @@ import ComposableArchitecture
 
 struct PomodoroTimerSettingsView: View {
     let store: Store<PomodoroTimerSettingsState, PomodoroTimerSettingsAction>
+    let selectableNumbers: [Int] = Array(1...60)
 
     init (store: Store<PomodoroTimerSettingsState, PomodoroTimerSettingsAction>) {
         self.store = store
@@ -18,8 +19,9 @@ struct PomodoroTimerSettingsView: View {
                         .frame(width: 200, alignment: .trailing)
 
                     Picker("", selection: viewStore.binding(\.$intervalTime)) {
-                        ForEach(1..<60) { minutes in
-                            Text("\(minutes)")
+                        ForEach(0..<selectableNumbers.count) { index in
+                            Text("\(selectableNumbers[index])")
+                                .tag(selectableNumbers[index])
                         }
                     }
                 }
@@ -29,8 +31,9 @@ struct PomodoroTimerSettingsView: View {
                         .frame(width: 200, alignment: .trailing)
 
                     Picker("", selection: viewStore.binding(\.$shortBreakTime)) {
-                        ForEach(1..<61) { minutes in
-                            Text("\(minutes)")
+                        ForEach(0..<selectableNumbers.count) { index in
+                            Text("\(selectableNumbers[index])")
+                                .tag(selectableNumbers[index])
                         }
                     }
                 }
@@ -40,8 +43,9 @@ struct PomodoroTimerSettingsView: View {
                         .frame(width: 200, alignment: .trailing)
 
                     Picker("", selection: viewStore.binding(\.$longBreakTime)) {
-                        ForEach(1..<61) { minutes in
-                            Text("\(minutes)")
+                        ForEach(0..<selectableNumbers.count) { index in
+                            Text("\(selectableNumbers[index])")
+                                .tag(selectableNumbers[index])
                         }
                     }
                 }
@@ -51,8 +55,8 @@ struct PomodoroTimerSettingsView: View {
                         .frame(width: 200, alignment: .trailing)
 
                     Picker("", selection: viewStore.binding(\.$intervalCountBeforeLongBreak)) {
-                        ForEach(0..<11) { minutes in
-                            Text("\(minutes)")
+                        ForEach(0..<11) { index in
+                            Text("\(index)")
                         }
                     }
                 }
