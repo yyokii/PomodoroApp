@@ -4,6 +4,7 @@ import SwiftUI
 import AppFeature
 import Firebase
 import PomodoroTimerFeature
+import SwiftHelper
 
 class AppDelegate: NSObject, NSApplicationDelegate {
 
@@ -13,6 +14,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         FirebaseApp.configure()
 
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(notified(notification:)),
+                                               name: .pomodoroModeChanged,
+                                               object: nil)
         // ポップオーバーの中にSwiftUIビューを設定
         let contentView = AppView(
             store: .init(
@@ -33,11 +38,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         // ステータスバーアイコンを設定
         self.statusBarItem = NSStatusBar.system.statusItem(withLength: CGFloat(NSStatusItem.variableLength))
         guard let button = self.statusBarItem.button else { return }
-        button.image = NSImage(systemSymbolName: "checkmark.circle.fill", accessibilityDescription: nil)
+        button.image = NSImage(systemSymbolName: "stopwatch.fill", accessibilityDescription: nil)
         button.action = #selector(showHidePopover(_:))
     }
 
-    @objc func showHidePopover(_ sender: AnyObject?) {
+    @objc private func showHidePopover(_ sender: AnyObject?) {
         guard let button = self.statusBarItem.button else { return }
         if self.popover.isShown {
             self.popover.performClose(sender)
@@ -47,6 +52,20 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
 
+    @objc private func notified(notification: Notification) {
+        let mode: PomodoroTimerState.PomodoroMode.Mode = notification.userInfo![Notification.Name.UserInfoKey.pomodoroMode] as! PomodoroTimerState.PomodoroMode.Mode
+
+        switch mode {
+        case .working:
+            statusBarItem.button!.image = NSImage(systemSymbolName: "stopwatch.fill", accessibilityDescription: nil)
+
+        case .shortBreak:
+            statusBarItem.button!.image = NSImage(systemSymbolName: "moon.zzz.fill", accessibilityDescription: nil)
+
+        case .longBreak:
+            statusBarItem.button!.image = NSImage(systemSymbolName: "zzz", accessibilityDescription: nil)
+        }
+    }
 }
 
 

@@ -6,6 +6,12 @@ import SwiftHelper
 
 // MARK: Settings
 
+/*
+ About TCA SwiftUI Bindings
+ https://www.pointfree.co/blog/posts/63-the-composable-architecture-%EF%B8%8F-swiftui-bindings
+ https://github.com/pointfreeco/swift-composable-architecture/pull/810
+ */
+
 public struct PomodoroTimerSettingsState: Equatable {
     // ユーザーが設定する「minutes」単位のポモドーロの各時間
     @BindableState var intervalTime: Int = 0

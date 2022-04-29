@@ -29,7 +29,7 @@ public struct PomodoroTimerState: Equatable {
 
 public extension PomodoroTimerState {
     struct PomodoroMode: Equatable {
-        enum Mode: CaseIterable, Equatable {
+        public enum Mode: CaseIterable, Equatable {
             case working
             case shortBreak
             case longBreak
@@ -125,6 +125,11 @@ public let pomodoroTimerReducer = PomodoroTimerReducer { state, action, environm
         case .longBreak:
             state.pomodoroMode.goWorking()
         }
+
+        // AppDelegateへ通知するためにNotificationCenterを利用しています
+        NotificationCenter.default.post(name: .pomodoroModeChanged,
+                                        object: nil,
+                                        userInfo: [Notification.Name.UserInfoKey.pomodoroMode : state.pomodoroMode.mode])
         return .none
     case .saveHistory(let history):
         return environment.apiClient
