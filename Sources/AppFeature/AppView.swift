@@ -5,6 +5,7 @@ import ComposableArchitecture
 import MyDataFeature
 import PomodoroTimerFeature
 import Settings
+import Styleguide
 
 public struct AppView: View {
     let store: Store<AppState, AppAction>
@@ -16,14 +17,27 @@ public struct AppView: View {
     public var body: some View {
         WithViewStore(store) { viewStore in
             VStack {
+                HStack {
+                    Spacer()
+
+                    Button {
+                        NSApp.sendAction(Selector(("showPreferencesWindow:")), to: nil, from: nil)
+                        NSApp.activate(ignoringOtherApps: true)
+                    } label: {
+                        Image(systemName: "gearshape.fill")
+                            .resizable()
+                            .frame(width: 24, height: 24)
+                            .foregroundColor(.appBlack)
+                    }
+                    .buttonStyle(.borderless)
+                    .padding(.trailing, 8)
+
+                }
                 PomodoroTimerView(pomodoroTimerStore: pomodoroTimerStore,
                                   myDataStore: myDataStore)
-
-                Button("Settings") {
-                    NSApp.sendAction(Selector(("showPreferencesWindow:")), to: nil, from: nil)
-                    NSApp.activate(ignoringOtherApps: true)
-                }
             }
+            .frame(width: 320, height: 120)
+            .background(Color.appGray)
             .onAppear {
                 viewStore.send(.onAppear)
             }

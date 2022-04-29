@@ -34,15 +34,14 @@ public extension PomodoroTimerState {
             case shortBreak
             case longBreak
 
-            #warning("ローカライズ対応")
             var name: String {
                 switch self {
                 case .working:
-                    return "作業中"
+                    return "WORKING"
                 case .shortBreak:
-                    return "短い休憩"
+                    return "SHORT\nBREAK"
                 case .longBreak:
-                    return "長い休憩"
+                    return "LONG\nBREAK"
                 }
             }
         }

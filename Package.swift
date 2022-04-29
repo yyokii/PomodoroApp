@@ -45,6 +45,7 @@ let package = Package(
                 "MyDataFeature",
                 "PomodoroTimerFeature",
                 "Settings",
+                "Styleguide",
                 "SwiftHelper",
                 .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
             ]),
@@ -78,6 +79,11 @@ let package = Package(
                 "SwiftHelper",
                 "UserDefaultsClient",
                 .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+            ]),
+        .target(
+            name: "Styleguide",
+            dependencies: [
+                "SwiftHelper"
             ]),
         .target(
             name: "SwiftHelper",

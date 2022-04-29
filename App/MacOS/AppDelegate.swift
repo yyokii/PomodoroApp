@@ -31,7 +31,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         )
         // ポップオーバーを設定
         let popover = NSPopover()
-        popover.contentSize = NSSize(width: 350, height: 500)
         popover.behavior = .transient
         popover.contentViewController = NSHostingController(rootView: contentView)
         self.popover = popover
