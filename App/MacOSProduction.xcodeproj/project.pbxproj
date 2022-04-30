@@ -17,7 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		F58FAAAD281D8ED0004E0A45 /* MacOSProduction.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MacOSProduction.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F58FAAAD281D8ED0004E0A45 /* Pomorodo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pomorodo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F58FAAC8281D9020004E0A45 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F58FAACA281D9020004E0A45 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		F58FAACB281D9020004E0A45 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
@@ -51,7 +51,7 @@
 		F58FAAAE281D8ED0004E0A45 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				F58FAAAD281D8ED0004E0A45 /* MacOSProduction.app */,
+				F58FAAAD281D8ED0004E0A45 /* Pomorodo.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -96,9 +96,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		F58FAAAC281D8ED0004E0A45 /* MacOSProduction */ = {
+		F58FAAAC281D8ED0004E0A45 /* Pomorodo */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = F58FAABC281D8ED1004E0A45 /* Build configuration list for PBXNativeTarget "MacOSProduction" */;
+			buildConfigurationList = F58FAABC281D8ED1004E0A45 /* Build configuration list for PBXNativeTarget "Pomorodo" */;
 			buildPhases = (
 				F58FAAA9281D8ED0004E0A45 /* Sources */,
 				F58FAAAA281D8ED0004E0A45 /* Frameworks */,
@@ -108,12 +108,12 @@
 			);
 			dependencies = (
 			);
-			name = MacOSProduction;
+			name = Pomorodo;
 			packageProductDependencies = (
 				F58FAAD8281D90B8004E0A45 /* App */,
 			);
 			productName = MacOSProduction;
-			productReference = F58FAAAD281D8ED0004E0A45 /* MacOSProduction.app */;
+			productReference = F58FAAAD281D8ED0004E0A45 /* Pomorodo.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -144,7 +144,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				F58FAAAC281D8ED0004E0A45 /* MacOSProduction */,
+				F58FAAAC281D8ED0004E0A45 /* Pomorodo */,
 			);
 		};
 /* End PBXProject section */
@@ -306,6 +306,8 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -334,6 +336,8 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -359,7 +363,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		F58FAABC281D8ED1004E0A45 /* Build configuration list for PBXNativeTarget "MacOSProduction" */ = {
+		F58FAABC281D8ED1004E0A45 /* Build configuration list for PBXNativeTarget "Pomorodo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F58FAABD281D8ED1004E0A45 /* Debug */,
