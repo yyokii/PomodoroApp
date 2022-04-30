@@ -34,6 +34,16 @@ public struct PomodoroTimerView: View {
                         .foregroundColor(.appBlack)
                         .frame(width: 120, height: 40)
                         .padding(.leading, 5)
+                    Button {
+                        viewStore.send(.reset)
+                    } label: {
+                        Image(systemName: "trash.fill")
+                            .resizable()
+                            .frame(width: 16, height: 20)
+                            .foregroundColor(.appBlack)
+                    }
+                    .buttonStyle(.borderless)
+                    
                     Spacer()
                 }
 

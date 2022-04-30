@@ -77,6 +77,7 @@ public enum PomodoroTimerAction: Equatable {
     case stopTimer
     case timerTick
     case updatePomodoroSettings
+    case reset
 
     case onAppear
     case onDisappear
@@ -202,6 +203,14 @@ public let pomodoroTimerReducer = PomodoroTimerReducer { state, action, environm
             state.timerText = state.timerSettings.longBreakIntervalMinutesSecond
         }
         return .none
+    case .reset:
+        state.pomodoroMode.goWorking()
+        state.finishedIntervalCount = 0
+
+        return .concatenate(
+            .init(value: .stopTimer),
+            .init(value: .updatePomodoroSettings)
+        )
     case .onAppear:
         return .init(value: .updatePomodoroSettings)
     case .onDisappear:

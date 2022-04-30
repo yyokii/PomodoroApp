@@ -26,7 +26,7 @@ public struct AppView: View {
                     } label: {
                         Image(systemName: "gearshape.fill")
                             .resizable()
-                            .frame(width: 24, height: 24)
+                            .frame(width: 20, height: 20)
                             .foregroundColor(.appBlack)
                     }
                     .buttonStyle(.borderless)
