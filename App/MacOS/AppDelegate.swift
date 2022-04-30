@@ -2,9 +2,28 @@ import Cocoa
 import SwiftUI
 
 import AppFeature
+import ComposableArchitecture
 import Firebase
 import PomodoroTimerFeature
+import Settings
 import SwiftHelper
+
+let pomodoroAppStore: Store<AppState, AppAction> = .init(
+    initialState: AppState(),
+    reducer: appReducer,
+    environment: .init(
+        apiClient: .live,
+        userDefaults: .live(),
+        mainQueue: DispatchQueue.main.eraseToAnyScheduler()
+    )
+)
+
+var settingsStore: Store<SettingsState, SettingsAction> {
+    return pomodoroAppStore.scope(
+        state: { $0.settings },
+        action: AppAction.settings
+    )
+}
 
 class AppDelegate: NSObject, NSApplicationDelegate {
 
@@ -20,14 +39,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                                                object: nil)
         // ポップオーバーの中にSwiftUIビューを設定
         let contentView = AppView(
-            store: .init(
-                initialState: AppState(),
-                reducer: appReducer,
-                environment: .init(
-                    apiClient: .live,
-                    mainQueue: DispatchQueue.main.eraseToAnyScheduler()
-                )
-            )
+            store: pomodoroAppStore
         )
         // ポップオーバーを設定
         let popover = NSPopover()

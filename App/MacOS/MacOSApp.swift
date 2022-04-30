@@ -1,19 +1,21 @@
 import SwiftUI
 
 import Settings
+import AppFeature
+import ComposableArchitecture
 
 @main
 struct MacOSApp: App {
+    init() {}
+
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
 
     var body: some Scene {
-        Settings {
-            SettingsView(store: .init(initialState: SettingsState(),
-                                      reducer: settingsReducer,
-                                      environment: .init(
-                                        mainQueue: DispatchQueue.main.eraseToAnyScheduler())
-                                     )
-            )
+
+        WithViewStore(settingsStore) { viewStore in
+            Settings {
+                SettingsView(store: settingsStore)
+            }
         }
     }
 }

@@ -47,6 +47,7 @@ let package = Package(
                 "Settings",
                 "Styleguide",
                 "SwiftHelper",
+                "UserDefaultsClient",
                 .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
             ]),
         .target(

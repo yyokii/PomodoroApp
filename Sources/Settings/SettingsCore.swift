@@ -57,6 +57,7 @@ public let pomodoroTimerSettingsReducer: Reducer<PomodoroTimerSettingsState, Pom
             state.intervalTime = settings.intervalSeconds / 60
             state.shortBreakTime = settings.shortBreakIntervalSeconds / 60
             state.longBreakTime = settings.longBreakIntervalSeconds / 60
+            state.intervalCountBeforeLongBreak = settings.intervalCountBeforeLongBreak
             return .none
         case .onDisappear:
             return .none
