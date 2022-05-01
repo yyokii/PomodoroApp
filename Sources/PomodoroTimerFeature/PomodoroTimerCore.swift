@@ -183,7 +183,6 @@ public let pomodoroTimerReducer = PomodoroTimerReducer { state, action, environm
         let finishedPomodoro: PomodoroTimerHistory = .init(
             startTime: .init(date: state.pomodoroMode.startDate!),
             endTime: .init(date: state.pomodoroMode.endDate!),
-            category: ["demo"],
             pomodoroState: state.pomodoroMode.mode.name
         )
 

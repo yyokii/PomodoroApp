@@ -6,7 +6,6 @@ public struct PomodoroTimerHistory: Codable, Equatable {
     @ServerTimestamp var createdTime: Timestamp?
     var startTime: Timestamp
     var endTime: Timestamp
-    var category: [String]
     var pomodoroState: String
 
     public init (
@@ -14,14 +13,12 @@ public struct PomodoroTimerHistory: Codable, Equatable {
         createdTime: Timestamp? = nil,
         startTime: Timestamp,
         endTime: Timestamp,
-        category: [String],
         pomodoroState: String
     ) {
         self.id = id
         self.createdTime = createdTime
         self.startTime = startTime
         self.endTime = endTime
-        self.category = category
         self.pomodoroState = pomodoroState
     }
 }
