@@ -139,18 +139,21 @@ public let pomodoroTimerReducer = PomodoroTimerReducer { state, action, environm
             .fireAndForget()
     case .startTimer:
         state.isTimerActive = true
+
         if state.pomodoroMode.startDate == nil {
             state.pomodoroMode.startDate = Date()
         }
-        return state.isTimerActive
-        ? Effect.timer(
+
+        NotificationCenter.default.post(name: .pomodoroModeChanged,
+                                        object: nil,
+                                        userInfo: [Notification.Name.UserInfoKey.pomodoroMode : state.pomodoroMode.mode])
+        return Effect.timer(
             id: TimerId(),
             every: 1,
             tolerance: .zero,
             on: environment.mainQueue
         )
             .map { _ in .timerTick }
-        : Effect.cancel(id: TimerId())
     case .stopTimer:
         state.isTimerActive = false
         return Effect.cancel(id: TimerId())
