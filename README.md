@@ -24,3 +24,10 @@ not yet...
 
 * Sign in/sign up with your email address
 * View previous data
+
+## Distribute
+
+(Xcode) Distribute App
+→ Developer ID
+→ Noatarize
+→ Export
